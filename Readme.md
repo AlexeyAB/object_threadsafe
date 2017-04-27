@@ -35,6 +35,11 @@
 
 ----
 
+For your Pull Requests use a separate branch: https://github.com/AlexeyAB/object_threadsafe/tree/for_pull_requests
+Before Pull Requests - please make all necessary tests on multi-core CPU, such as in folders: CDS_test, Real_app_bench or benchmark.
+
+---
+
 1. How to use `safe_ptr<>` - in the same way as `std::shared_ptr<>`: http://coliru.stacked-crooked.com/a/ccf634f1a5e7f991
 
 
