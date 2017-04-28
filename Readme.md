@@ -1,3 +1,5 @@
+This repository for examples of articles
+
 ## How to make any object thread-safe with the speed of lock-free algorithms
 
 `safe_ptr.h` contains C++ code of:
@@ -36,7 +38,8 @@
 ----
 
 For your Pull Requests use a separate branch: https://github.com/AlexeyAB/object_threadsafe/tree/for_pull_requests
-Before Pull Requests - please make all necessary tests on multi-core CPU, such as in folders: CDS_test, Real_app_bench or benchmark.
+
+Before Pull Requests - please run all necessary benchmarks, preferably on a server CPU, such as in folders: CDS_test, Real_app_bench or benchmark - and insert images of the results charts.
 
 ---
 
