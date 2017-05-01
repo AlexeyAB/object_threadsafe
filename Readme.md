@@ -57,7 +57,7 @@ Before Pull Requests - please run all necessary benchmarks, preferably on a serv
 
 
 int main() { 
-    safe_ptr< std::map< std::string, int > > safe_map_string_int;
+    sf::safe_ptr< std::map< std::string, int > > safe_map_string_int;
 
     std::thread t1([&]() { safe_map_string_int->emplace("apple", 1); }); 
     std::thread t2([&]() { safe_map_string_int->emplace("potato", 2); }); 
@@ -128,14 +128,14 @@ int main() {
 ```cpp
 #include "safe_ptr.h"
 
-contfree_safe_ptr< std::map<std::string, int> > safe_map_strings_global;   // cont-free shared-mutex
+sf::contfree_safe_ptr< std::map<std::string, int> > safe_map_strings_global;   // cont-free shared-mutex
 
 
 template<typename T>
-void func(contfree_safe_ptr<T> safe_map_strings)
+void func(sf::contfree_safe_ptr<T> safe_map_strings)
 {
     // read-only (shared lock during access)
-    contfree_safe_ptr<T> const &readonly_safe_map_string = safe_map_strings;
+    sf::contfree_safe_ptr<T> const &readonly_safe_map_string = safe_map_strings;
 
     for (size_t i = 0; i < 100000; ++i)
     {
@@ -173,6 +173,7 @@ int main() {
 ```cpp
 #include "safe_ptr.h"
 
+using namespace sf;
 
 struct field_t { int money, time; field_t(int m, int t) : money(m), time(t) {} field_t() : money(0), time(0) {} };
 typedef safe_obj<field_t, spinlock_t> safe_obj_field_t;
