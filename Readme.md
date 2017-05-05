@@ -19,7 +19,7 @@ This repository for examples of articles
 
 * **any_object_threadsafe** - how to use `safe_ptr<>` (Article 1)
 * **contfree_shared_mutex** - how to use `contention_free_shared_mutex<>` (Article 2)
-
+* **examples** - all examples from online compilers in articles
 
 
 **There are benchmarks:**
