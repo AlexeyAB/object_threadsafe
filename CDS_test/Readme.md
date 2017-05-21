@@ -5,7 +5,8 @@ Compares:
 * `std::mutex + std::map`
 * `SkipListMap`
 * `BronsonAVLTreeMap`
-* `contention_free_shared_mutex<> + std::map`
+* `contention_free_shared_mutex<> + std::map` - contfree_safe_ptr< std::map<> >
+* `contention_free_shared_mutex<> + safe_map_partitioned_t<>` - safe_map_partitioned_t<,,contfree_safe_ptr>
 
 
 To build and test do:
