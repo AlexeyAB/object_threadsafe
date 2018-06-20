@@ -19,10 +19,10 @@
 #include <iomanip>
 #include <algorithm>
 
-//#define SHARED_MTX   // C++14
-
-#ifdef SHARED_MTX
-#include <shared_mutex>   // C++14
+// Autodetect C++14
+#if _cplusplus >= 201402L
+#define SHARED_MTX
+#include <shared_mutex>
 #endif
 
 namespace sf {
