@@ -51,10 +51,10 @@ class safe_ptr {
     void unlock() { mtx_ptr->unlock(); }
     friend struct link_safe_ptrs;
     template<size_t, typename, size_t, size_t> friend class lock_timed_any;
-#if (_WIN32 && _MSC_VER < 1900)
-	template<class mutex_type> friend class std::lock_guard;  // MSVS2013 or Clang 4.0
+#if (_MSC_VER && _MSC_VER == 1900)
+    template<class... mutex_types> friend class std::lock_guard;  // MSVS2015
 #else
-	template<class... mutex_types> friend class std::lock_guard;  // C++17 or MSVS2015
+    template<class mutex_type> friend class std::lock_guard;  // other compilers
 #endif
 public:
     template<typename... Args>
