@@ -17,22 +17,22 @@ This repository for examples of articles
 
 **There are examples:**
 
-* **any_object_threadsafe** - how to use `safe_ptr<>` (Article 1)
-* **contfree_shared_mutex** - how to use `contention_free_shared_mutex<>` (Article 2)
+* **any_object_threadsafe** - how to use `safe_ptr<>` - Article 1: https://www.codeproject.com/Articles/1183379/We-make-any-object-thread-safe
+* **contfree_shared_mutex** - how to use `contention_free_shared_mutex<>` - Article 2: https://www.codeproject.com/Articles/1183423/We-make-a-std-shared-mutex-times-faster
 * **examples** - all examples from online compilers in articles
 
 
 **There are benchmarks:**
 
-* **bench_contfree** - Benchmark contention free shared mutex (Article 2)
+* **bench_contfree** - Benchmark contention free shared mutex - Article 2: https://www.codeproject.com/Articles/1183423/We-make-a-std-shared-mutex-times-faster
 
-* **benchmark** - Benchmark contention free shared mutex - extended (Article 3)
+* **benchmark** - Benchmark contention free shared mutex (extended) - Article 3: https://www.codeproject.com/Articles/1183446/Thread-safe-std-map-with-the-speed-of-lock-free-ma
 
-* **CDS_test** - Benchmark lock-free lib-CDS and `std::map` guarded by contention free shared mutex (Article 3)
+* **CDS_test** - Benchmark lock-free lib-CDS and `std::map` guarded by contention free shared mutex - Article 3: https://www.codeproject.com/Articles/1183446/Thread-safe-std-map-with-the-speed-of-lock-free-ma
 
 * **Real_app_bench** - Benchmark lock-free lib-CDS and `std::map` guarded by contention free shared mutex
 
-  (Simulates real application - added 20 usec delay between each inter-thread data exchange - Article 3)
+  (Simulates real application - added 20 usec delay between each inter-thread data exchange) - Article 3: https://www.codeproject.com/Articles/1183446/Thread-safe-std-map-with-the-speed-of-lock-free-ma
 
 
 ----
