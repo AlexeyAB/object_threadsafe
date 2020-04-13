@@ -12,6 +12,11 @@ This repository for examples of articles
 
 ----
 
+| ![Performance, MOps](https://user-images.githubusercontent.com/4096485/79151220-c03c4180-7dd2-11ea-9b73-e281fa561a78.png) | ![Median Latency, usec](https://user-images.githubusercontent.com/4096485/79151246-caf6d680-7dd2-11ea-9527-db1a0c0a7364.png) |
+|---|---|
+
+----
+
 ### Additional contents for articles
 
 
