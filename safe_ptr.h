@@ -82,9 +82,18 @@ namespace sf {
             template<typename mutex_type> friend class std::shared_lock;  // C++14
 #endif
 
+        private:
+        
+            safe_ptr(std::shared_ptr<T> &&ptr, std::shared_ptr<mutex_t> &&mtx_ptr)
+                : ptr(std::move(ptr))
+                , mtx_ptr(std::move(mtx_ptr))
+            {}
+
         public:
             template<typename... Args>
-            safe_ptr(Args... args) : ptr(std::make_shared<T>(args...)), mtx_ptr(std::make_shared<mutex_t>()) {}
+            static safe_ptr make_safe(Args&&... args) { 
+                return safe_ptr(std::make_shared<T>(std::forward<Args>(args)...), std::make_shared<mutex_t>());
+            }
 
             auto_lock_t<x_lock_t> operator -> () { return auto_lock_t<x_lock_t>(get_obj_ptr(), *get_mtx_ptr()); }
             auto_lock_obj_t<x_lock_t> operator * () { return auto_lock_obj_t<x_lock_t>(get_obj_ptr(), *get_mtx_ptr()); }
