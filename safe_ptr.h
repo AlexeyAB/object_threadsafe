@@ -397,14 +397,14 @@ namespace sf {
 		std::thread::id get_fast_this_thread_id() { return std::this_thread::get_id(); }
 
         struct unregister_t {
-            int thread_index;
+            size_t thread_index;
             std::shared_ptr<array_slock_t> array_slock_ptr;
-            unregister_t(int index, std::shared_ptr<array_slock_t> const& ptr) : thread_index(index), array_slock_ptr(ptr) {}
+            unregister_t(size_t index, std::shared_ptr<array_slock_t> const& ptr) : thread_index(index), array_slock_ptr(ptr) {}
             unregister_t(unregister_t &&src) : thread_index(src.thread_index), array_slock_ptr(std::move(src.array_slock_ptr)) {}
             ~unregister_t() { if (array_slock_ptr.use_count() > 0) (*array_slock_ptr)[thread_index].value--; }
         };
 
-        int get_or_set_index(index_op_t index_op = get_index_op, int set_index = -1) {
+        size_t get_or_set_index(index_op_t index_op = get_index_op, size_t set_index = ULLONG_MAX) {
             thread_local static std::unordered_map<void *, unregister_t> thread_local_index_hashmap;
             // get thread index - in any cases
             auto it = thread_local_index_hashmap.find(this);
@@ -415,17 +415,17 @@ namespace sf {
                 if (shared_locks_array[set_index].value == 1) // if isn't shared_lock now
                     thread_local_index_hashmap.erase(this);
                 else
-                    return -1;
+                    return ULLONG_MAX;
             }
             else if (index_op == register_thread_op) {  // register thread
                 thread_local_index_hashmap.emplace(this, unregister_t(set_index, shared_locks_array_ptr));
 
                 // remove info about deleted contfree-mutexes
-                for (auto it = thread_local_index_hashmap.begin(), ite = thread_local_index_hashmap.end(); it != ite;) {
-                    if (it->second.array_slock_ptr->at(it->second.thread_index).value < 0)    // if contfree-mtx was deleted
-                        it = thread_local_index_hashmap.erase(it);
+                for (auto it_inner = thread_local_index_hashmap.begin(), ite_inner = thread_local_index_hashmap.end(); it_inner != ite_inner;) {
+                    if (it_inner->second.array_slock_ptr->at(it_inner->second.thread_index).value < 0)    // if contfree-mtx was deleted
+                        it_inner = thread_local_index_hashmap.erase(it_inner);
                     else
-                        ++it;
+                        ++it_inner;
                 }
             }
             return set_index;
@@ -445,8 +445,8 @@ namespace sf {
 
             bool unregister_thread() { return get_or_set_index(unregister_thread_op) >= 0; }
 
-            int register_thread() {
-                int cur_index = get_or_set_index();
+            size_t register_thread() {
+                size_t cur_index = get_or_set_index();
 
                 if (cur_index == -1) {
                     if (shared_locks_array_ptr.use_count() <= (int)shared_locks_array.size())  // try once to register thread
@@ -468,7 +468,7 @@ namespace sf {
             }
 
             void lock_shared() {
-                int const register_index = register_thread();
+                size_t const register_index = register_thread();
 
                 if (register_index >= 0) {
                     int recursion_depth = shared_locks_array[register_index].value.load(std::memory_order_acquire);
@@ -500,7 +500,7 @@ namespace sf {
             }
 
             void unlock_shared() {
-                int const register_index = get_or_set_index();
+                size_t const register_index = get_or_set_index();
 
                 if (register_index >= 0) {
                     int const recursion_depth = shared_locks_array[register_index].value.load(std::memory_order_acquire);
