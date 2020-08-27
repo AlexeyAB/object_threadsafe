@@ -518,7 +518,7 @@ namespace sf {
 
             void lock() {
                 // forbidden upgrade S-lock to X-lock - this is an excellent opportunity to get deadlock
-                int const register_index = get_or_set_index();
+                size_t const register_index = get_or_set_index();
                 if (register_index >= 0)
                     assert(shared_locks_array[register_index].value.load(std::memory_order_acquire) == 1);
 
