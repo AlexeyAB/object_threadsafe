@@ -331,19 +331,19 @@ class contention_free_shared_mutex {
 
 	int get_or_set_index(index_op_t index_op = get_index_op, int set_index = -1) {
 		thread_local static std::unordered_map<void *, unregister_t> thread_local_index_hashmap;
-		// get thread index - in any cases
-		auto it = thread_local_index_hashmap.find(this);
+		// get thread index - in any cases. Use &shared_locks_array as key ("this" may get recycled if contfree-mtx under "it" was deleted)
+		auto it = thread_local_index_hashmap.find(&shared_locks_array);
 		if (it != thread_local_index_hashmap.cend())
 			set_index = it->second.thread_index;
 
 		if (index_op == unregister_thread_op) {  // unregister thread
 			if (shared_locks_array[set_index].value == 1) // if isn't shared_lock now
-				thread_local_index_hashmap.erase(this);
+				thread_local_index_hashmap.erase(&shared_locks_array);
 			else
 				return -1;
 		}
 		else if (index_op == register_thread_op) {  // register thread
-			thread_local_index_hashmap.emplace(this, unregister_t(set_index, shared_locks_array_ptr));
+			thread_local_index_hashmap.emplace(&shared_locks_array, unregister_t(set_index, shared_locks_array_ptr));
 
 			// remove info about deleted contfree-mutexes
 			for (auto it = thread_local_index_hashmap.begin(), ite = thread_local_index_hashmap.end(); it != ite;) {
