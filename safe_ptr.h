@@ -85,6 +85,7 @@ namespace sf {
         public:
             template<typename... Args>
             safe_ptr(Args... args) : ptr(std::make_shared<T>(args...)), mtx_ptr(std::make_shared<mutex_t>()) {}
+            explicit safe_ptr(std::unique_ptr<T>&& ptr) : ptr(std::move(ptr)), mtx_ptr(std::make_shared<mutex_t>()) {}
 
             auto_lock_t<x_lock_t> operator -> () { return auto_lock_t<x_lock_t>(get_obj_ptr(), *get_mtx_ptr()); }
             auto_lock_obj_t<x_lock_t> operator * () { return auto_lock_obj_t<x_lock_t>(get_obj_ptr(), *get_mtx_ptr()); }
